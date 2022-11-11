@@ -1,23 +1,26 @@
 import logo from './logo.svg';
 import './App.css';
+import AplicationBar from './Components/AplicationBar';
+import AplicationModal from './Components/AplicationModal';
+import AplicationTable from './Components/AplicationTable';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <AplicationBar></AplicationBar>
+      <Container maxWidth="lg" style={{ marginTop: 30 }}>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
         >
-          Learn React
-        </a>
-      </header>
+          <AplicationModal></AplicationModal>
+        </Grid>
+        <AplicationTable></AplicationTable>
+      </Container>
     </div>
   );
 }
