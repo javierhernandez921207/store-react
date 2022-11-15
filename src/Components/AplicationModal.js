@@ -1,48 +1,101 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { FormControl, FormHelperText, Input, InputLabel } from '@mui/material';
+import { useForm } from 'react-hook-form';
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
-
-export default function KeepMountedModal() {
+export default function FormDialog( props ) {
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const {register, handleSubmit} = useForm();
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const onSubmit = (data, e) => {
+        data.id = 10
+        data.name = 'asdas'
+        data.price = 23
+        data.cost = 20
+        data.description = 'null'
+        console.log(data)
+        props.addProduct(data)
+        e.target.reset();
+    }
+
 
     return (
         <div>
-            <Button onClick={handleOpen} style={{ float: 'left' }} variant="contained" endIcon={<AddCircleOutlineOutlinedIcon />}>
-                Add Product
+            <Button variant="outlined" onClick={handleClickOpen}>
+                Add product
             </Button>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>New Product</DialogTitle>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <DialogContent>
+                        <div style={{ padding: '5px' }}>
+                            <TextField
+                                required
+                                autoFocus
+                                id="name"
+                                label="Nombre"
+                                type="text"
+                                fullWidth
+                                variant="outlined"                                                                
+                            />
+                        </div>
+                        <div style={{ padding: '5px' }}>
+                            <TextField
+                                required
+                                id="cost"
+                                label="Cost"
+                                type="number"
+                                style={{ width: '35%', paddingRight: '1%' }}
+                                variant="outlined"
+                            />
+                            <TextField
+                                required
+                                id="price"
+                                label="Price"
+                                type="number"
+                                style={{ width: '35%', paddingRight: '1%' }}
+                                variant="outlined"
+                            />
+                            <TextField
+                                required
+                                id="unit"
+                                label="Unit"
+                                type="number"
+                                style={{ width: '28%' }}
+                                variant="outlined"
+                            />
+                        </div>
+                        <div style={{ padding: '5px' }}>
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="Description"
+                                multiline
+                                rows={4}
+                                fullWidth
+                            />
+                        </div>
 
-            <Modal
-                keepMounted
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="keep-mounted-modal-title"
-                aria-describedby="keep-mounted-modal-description">
-                <Box sx={style}>
-                    <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
-                        Text in a modal
-                    </Typography>
-                    <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
-                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                    </Typography>
-                </Box>
-            </Modal>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button type='submit' color='primary' preve>Register</Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
         </div>
     );
 }
