@@ -4,14 +4,28 @@ import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { FormControl, FormHelperText, Input, InputLabel } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { useDispatch } from "react-redux";
+import { addProduct } from "../features/product/productSlice";
 
-export default function FormDialog( props ) {
+export default function FormDialog(props) {
+
     const [open, setOpen] = React.useState(false);
-    const {register, handleSubmit} = useForm();
+
+    const [product, setProduct] = React.useState({
+        id: 0,
+        name: '',
+        price: 0,
+        cost: 0,
+        units: 0,
+        description: ""
+    });
+
+    const dispatch = useDispatch();
+
+    const handleChange = e => {
+        setProduct({ ...product, [e.target.name]: e.target.value })
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -21,17 +35,15 @@ export default function FormDialog( props ) {
         setOpen(false);
     };
 
-    const onSubmit = (data, e) => {
-        data.id = 10
-        data.name = 'asdas'
-        data.price = 23
-        data.cost = 20
-        data.description = 'null'
-        console.log(data)
-        props.addProduct(data)
+    //...product mantiene los datos del objeto y solo modifica su id
+    const handleSubmit = (e, action) => {
+        e.preventDefault();
+        setProduct({ ...product, id: Math.floor(Math.random() * 500) })
+        console.log(product);
+        dispatch(addProduct(product));
         e.target.reset();
+        handleClose();
     }
-
 
     return (
         <div>
@@ -40,59 +52,69 @@ export default function FormDialog( props ) {
             </Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>New Product</DialogTitle>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit}>
                     <DialogContent>
                         <div style={{ padding: '5px' }}>
                             <TextField
                                 required
                                 autoFocus
                                 id="name"
-                                label="Nombre"
+                                name='name'
+                                label="Name"
                                 type="text"
                                 fullWidth
-                                variant="outlined"                                                                
+                                variant="outlined"
+                                onChange={handleChange}
                             />
                         </div>
                         <div style={{ padding: '5px' }}>
                             <TextField
                                 required
                                 id="cost"
+                                name='cost'
                                 label="Cost"
                                 type="number"
                                 style={{ width: '35%', paddingRight: '1%' }}
                                 variant="outlined"
+                                onChange={handleChange}
                             />
                             <TextField
                                 required
                                 id="price"
+                                name='price'
                                 label="Price"
                                 type="number"
                                 style={{ width: '35%', paddingRight: '1%' }}
                                 variant="outlined"
+                                onChange={handleChange}
                             />
                             <TextField
                                 required
                                 id="unit"
+                                name='units'
                                 label="Unit"
                                 type="number"
                                 style={{ width: '28%' }}
                                 variant="outlined"
+                                onChange={handleChange}
                             />
                         </div>
                         <div style={{ padding: '5px' }}>
                             <TextField
                                 id="outlined-multiline-static"
                                 label="Description"
+                                name='description'
                                 multiline
                                 rows={4}
                                 fullWidth
+                                onChange={handleChange}
                             />
                         </div>
 
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button type='submit' color='primary' preve>Register</Button>
+                        <Button onClick={handleClose} >Cancel</Button>
+                        <Button type='submit' color='primary' >Register</Button>
                     </DialogActions>
                 </form>
             </Dialog>
