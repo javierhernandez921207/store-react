@@ -1,24 +1,14 @@
 import './App.css';
-import AplicationBar from './Components/AplicationBar';
-import AplicationModal from './Components/AplicationModal';
-import AplicationTable from './Components/AplicationTable';
+import AplicationBar2 from './Components/AplicationBar2';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
+import ProductTable from "./Components/Product/ProductTable";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
     <div className="App">
-      <AplicationBar></AplicationBar>
       <Container maxWidth="lg" style={{ marginTop: 30 }}>
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-start"
-          alignItems="center"
-        >
-          <AplicationModal ></AplicationModal>
-        </Grid>
-        <AplicationTable></AplicationTable>
+        <ProductTable></ProductTable>
       </Container>
     </div>
   );

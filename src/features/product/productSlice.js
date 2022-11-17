@@ -13,12 +13,18 @@ const initialState = [
 export const productSlice = createSlice({
     name: 'products',
     initialState,
-    reducers:{
+    reducers: {
         addProduct: (state, action) => {
             state.push(action.payload);
+        },
+        deleteProduct: (state, action) => {
+            const px = state.find(p => p.id === action.payload);
+            if (px) {
+                state.splice(state.indexOf(px), 1)
+            }
         }
     }
 })
 // Action creators are generated for each case reducer function
-export const { addProduct } = productSlice.actions
+export const { addProduct, deleteProduct } = productSlice.actions
 export default productSlice.reducer
